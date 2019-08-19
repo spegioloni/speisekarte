@@ -13,9 +13,21 @@
   </head>
   <body>
     <div id="top"></div>
-    <h1 class="h1 text-uppercase p-2">Home</h1>
+    <h1 class="h1 text-uppercase p-2">Speisen verwalten</h1>
+    <div class="container mb-2">
+      <select class="" name="Gerichtart" id="typ">
+        <option value="">Vorspeise</option>
+        <option value="">Hauptgericht</option>
+        <option value="">Nachspeise</option> </select
+      ><br />
+      <label for="input">Gericht eingeben</label>
+      <input type="text" name="" value="" placeholder="" id="name" /> <br />
+      <label for="input">Preis</label>
+      <input type="text" name="" value="" placeholder="" id="preis" /> <br />
+      <button type="button" name="button">Hinzufügen</button>
+    </div>
 
-    <div class="container" id="content"></div>
+    <div class="container" id="middle"></div>
 
     <script id="navbar" type="text/x-handlebars-template">
       <nav class="navbar navbar-dark bg-primary d-flex justify-content-start">
@@ -23,6 +35,12 @@
         <a href="{{this.link}}" class="nav-link text-light">{{this.name}}</a>
         {{/each}}
       </nav>
+    </script>
+
+    <script id="menu" type="text/x-handlebars-template">
+      {{#each menuItems}}
+      <p class="lead">Gericht: {{name}} | Preis: {{preis}}</p>
+      {{/each}}
     </script>
 
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->

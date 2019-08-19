@@ -1,6 +1,4 @@
-$("#content").html("Hallo Welt!");
-console.log($("content"));
-
+// SETUP FIREBASE
 var firebaseConfig = {
   apiKey: "AIzaSyA70BZjanQr9Q--HeKo6bFJi37miqJwYgY",
   authDomain: "test-a0932.firebaseapp.com",
@@ -14,15 +12,31 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 var db = firebase.firestore();
 
+// SETUP HANDLEBARS COMPILE FUNCTION
+function render(templateName, context, targetDivId) {
+  var source = document.getElementById(templateName).innerHTML;
+  var template = Handlebars.compile(source);
+  var html = template(context);
 
+  $("#" + targetDivId).html(html);
+}
 
-var docRef = db.collection("Test").doc("name");
-docRef.get().then(function(doc) {
-    if (doc.exists) {
-        console.log("Document data:", doc.data());
-        $("#content").html(doc.data().vorname);
-    } else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
-    }
-  });
+// SETUP NAVBAR
+const navItems = [
+  { name: "Home", link: "./index.html" },
+  { name: "Speisekarte", link: "./speisekarte.html" },
+  { name: "Verwalten", link: "./verwalten.html" }
+];
+
+render("navbar", { navItems: navItems }, "top");
+
+// GET STUFF OUT OF DB
+var docRef = db.collection("speisekarte");
+var menuItems = [];
+docRef.get().then(function(snapshot) {
+  for (var i = 0; i < snapshot.docs.length; i++) {
+    menuItems.push(snapshot.docs[i].data());
+    console.log(menuItems);
+  }
+  render("menu", { menuItems: menuItems }, "middle");
+});
