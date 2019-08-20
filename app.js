@@ -10,7 +10,8 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-var db = firebase.firestore();
+const db = firebase.firestore();
+const auth = firebase.auth();
 
 // SETUP HANDLEBARS COMPILE FUNCTION
 function render(templateName, context, targetDivId) {
@@ -39,4 +40,23 @@ docRef.get().then(function(snapshot) {
     console.log(menuItems);
   }
   render("menu", { menuItems: menuItems }, "middle");
+});
+
+// ADD MEAL
+$("#addMeal").click(function() {
+  var typ = $("#typ option:selected").text();
+  var name = $("#name").val();
+  var preis = parseFloat($("#preis").val());
+  var ts = new Date();
+  if (name != "" && preis != "") {
+    db.collection("speisekarte").add({
+      name: name,
+      typ: typ,
+      added: ts,
+      preis: preis
+    });
+    console.log("Neues Gericht hinzugefügt!");
+  } else {
+    alert("Bitte alle Felder ausfüllen!");
+  }
 });
